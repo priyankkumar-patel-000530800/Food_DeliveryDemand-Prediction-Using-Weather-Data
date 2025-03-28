@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Delivery Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        #result {
+            margin-top: 20px;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Food Delivery Predictor</h1>
+    <p>Click the button below to predict delivery orders for the next 6 days.</p>
+    <button onclick="getPredictions()">Predict</button>
+    <div id="result"></div>
+
+    <script>
+        async function getPredictions() {
+            const response = await fetch('/predict', { method: 'POST' });
+            const data = await response.json();
+
+            let table = `<table>
+                <tr>
+                    <th>Date</th>
+                    <th>Predicted Orders</th>
+                </tr>`;
+            
+            data.forEach(item => {
+                table += `
+                    <tr>
+                        <td>${item.date}</td>
+                        <td>${item.orders}</td>
+                    </tr>`;
+            });
+            
+            table += '</table>';
+            document.getElementById('result').innerHTML = table;
+        }
+    </script>
+</body>
+</html>
